@@ -57,6 +57,7 @@ class EnquiryController extends Controller
     {
         $current_enquiry = OpenEnquiry::find($id);
         $enquiry_user   = EnquiryUser::findOrFail($current_enquiry->enquiry_user_id);
+       // dd($enquiry_user);
         $histroyOpen    = OpenEnquiry::where('enquiry_user_id','=',$enquiry_user->id)->get();
         $histroyClosed  = ClosedEnquiry::where('enquiry_user_id','=',$enquiry_user->id)->get();
 
@@ -64,29 +65,83 @@ class EnquiryController extends Controller
             'current'   =>  $current_enquiry,
             'user'      =>  $enquiry_user ,
             'open'      =>  $histroyOpen,
+            'closed'    =>  $histroyClosed,
+            'id'=>$id,
+        ]);
+    }
+    public function user(Request $request,$id,$uid){
+        $data = $request->input();
+        $name = $request->input('name');
+        $updateid =EnquiryUser::findOrFail($uid);
+        $updateid->name = $name;
+        $updateid->save();
+        $current_enquiry = OpenEnquiry::find($id);
+        $enquiry_user   = EnquiryUser::find($uid);
+
+        $histroyOpen    = OpenEnquiry::where('enquiry_user_id','=',$enquiry_user->id)->get();
+        $histroyClosed  = ClosedEnquiry::where('enquiry_user_id','=',$enquiry_user->id)->get();
+
+        return view('dashboard.view-enquiry')->with([
+            'current'   =>  $current_enquiry,
+            'user'      =>  $enquiry_user ,
+            'open'      =>  $histroyOpen,
+            'closed'    =>  $histroyClosed,
+            'id'=>$id,
+        ]);
+
+    }
+    public function closedview($id){
+        $current_enquiry = ClosedEnquiry::find($id);
+        $enquiry_user   = EnquiryUser::findOrFail($current_enquiry->enquiry_user_id);
+        $histroyClosed  = ClosedEnquiry::where('enquiry_user_id','=',$enquiry_user->id)->get();
+
+        return view('dashboard.closed-enquiry')->with([
+            'current'   =>  $current_enquiry,
+            'user'      =>  $enquiry_user ,
             'closed'    =>  $histroyClosed
         ]);
     }
+
+    public function closedupdate(){
+
+            $status = Input::get('status');
+            $enquiry = ClosedEnquiry::findOrFail(Input::get('id'));
+            if($status)
+            {
+                //not resolved
+                $enquiry->remarks = Input::get('remarks');
+                $enquiry->responded_time = Carbon::now();
+                $enquiry->save();
+                return redirect('/dashboard/rescall');
+            }
+
+//            $closedEnquiry = new ClosedEnquiry();
+//            $closedEnquiry->remarks = Input::get('remarks');
+//            $closedEnquiry->responded_time = Carbon::now();
+//            $closedEnquiry->enquiry_user_id= $enquiry->enquiry_user_id;
+//            $closedEnquiry->in_time= $enquiry->in_time;
+//            $closedEnquiry->save();
+            $enquiry->delete();
+            return redirect('/dashboard/rescall');
+        }
 
     /**
      * Updating the status of the ticket in the form at enquiry/view-ticket/{id}
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
+
     public function update()
     {
         $status = Input::get('status');
         $enquiry = OpenEnquiry::findOrFail(Input::get('id'));
-//        dd($enquiry);
         if($status)
         {
-            //not resolved
             $enquiry->remarks = Input::get('remarks');
             $enquiry->responded_time = Carbon::now();
             $enquiry->save();
-            return redirect('/dashboard');
+            return redirect('/dashboard/rescall');
         }
-
         $closedEnquiry = new ClosedEnquiry();
         $closedEnquiry->remarks = Input::get('remarks');
         $closedEnquiry->responded_time = Carbon::now();
@@ -94,7 +149,12 @@ class EnquiryController extends Controller
         $closedEnquiry->in_time= $enquiry->in_time;
         $closedEnquiry->save();
         $enquiry->delete();
-        return redirect('/dashboard');
+        return redirect('/dashboard/rescall');
+    }
+
+      public function viewuser($id){
+          $user = EnquiryUser::find($id);
+           return view('dashboard.viewuser')->with(['user'=>$user]);
     }
 
     /**

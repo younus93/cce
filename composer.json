@@ -6,7 +6,8 @@
     "type": "project",
     "require": {
         "php": ">=5.5.9",
-        "laravel/framework": "5.1.*"
+        "laravel/framework": "5.1.*",
+        "yajra/laravel-datatables-oracle": "~6.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -19,11 +20,16 @@
             "database",
             ""
         ],
+        "files": [
+            "app/Helpers/Helper.php",
+            "app/Helpers/IssueHelper.php"
+        ],
         "psr-4": {
             "App\\": "app/"
         }
+
     },
-    "autoload-dev": {
+    "autoload-real": {
         "classmap": [
             "tests/TestCase.php"
         ]
@@ -49,4 +55,5 @@
     "config": {
         "preferred-install": "dist"
     }
+
 }
