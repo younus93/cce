@@ -2,10 +2,17 @@
 <div id="page-wrapper">
 
     @section('content')
-            {{--</div>--}}
-            {{--<div class="container-fluid">--}}
-            <div class="row" style="margin:-273px 50px;">
-                <h3>Calls to be responded</h3>
+        <div class="container-fluid" style="margin-top:-269px; ">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2 class="page-header1" style="color:#00b3ee;">Responded Calls</h2></div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" style="font-weight: bold;"> Calls To Be Responded</div>
+                        <div class="panel-body">
+                            <div class="row">
                 <table class="table table-hover">
                     <tr>
                         <th>Id</th>
@@ -35,3 +42,8 @@
                 </table>
             </div>
         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>

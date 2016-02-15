@@ -86,7 +86,7 @@
                                 {{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$c['in_time'])->toDayDateTimeString() }}
                             </td>
                             <td>
-                                <a class="btn btn-primary" href="{{ url('enquiry/view-ticket/'.$c['id']) }}">View Ticket</a>
+                                <a class="btn btn-primary" href="{{ url('dashboard/closedview/'.$c['id']) }}">View Ticket</a>
                             </td>
                         </tr>
                     @endforeach

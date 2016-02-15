@@ -26,9 +26,9 @@ Route::get('/onering',"APIController@get");
  * Login for CCE Employee
  */
 
-Route::get('auth/login', 'Auth\AuthController@getLogin');
-Route::post('auth/login', 'Auth\AuthController@postLogin');
-Route::get('auth/logout', 'Auth\AuthController@getLogout');
+Route::get('/auth/login', 'Auth\AuthController@getLogin');
+Route::post('/auth/login', 'Auth\AuthController@postLogin');
+Route::get('/auth/logout', 'Auth\AuthController@getLogout');
 
 /*
  * Routes for dashboard activities
@@ -54,7 +54,7 @@ Route::get('/register/create','RegisterController@form');
 Route::post('/register/form','RegisterController@create');
 Route::get('/register/delete/{id}','RegisterController@delete');
 
-Route::get('/dashboard/closedview','DashboardController@closedview');
+Route::get('/dashboard/closedview/{id}','DashboardController@closedview');
 
 
 Route::get('/register/view','RegisterController@view');

@@ -67,9 +67,10 @@ class DashboardController extends Controller
          */
 
     }
-    public function closedview(){
+    public function closedview($id){
 
-         return View('dashboard.closedview');
+        $closedview = ClosedEnquiry::findOrFail($id);
+         return View('dashboard.closedview')->with(['closedview'=>$closedview]);
     }
     public function users(){
         $user = EnquiryUser::All();
